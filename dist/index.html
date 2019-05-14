@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="shortcut icon" type="image/png" href="favadd"/>
+    <link rel="stylesheet" href="main.css" />
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <title>Avis Resto</title>
+</head>
+<body>
+    <header class="container-fluid">
+        <div class="row headBackground">
+            <div class="col-12 col-md-6 flexboxSb">
+                    <img src="../assets/img/logoresto.png" alt="logo" class="logo">
+                <h1 class="title"> Avis<span class="white">O</span>Resto<span class="white">.Fr</span></h1>
+            </div>
+            <div class="col-12 col-md-6 flexboxCenter">
+                <button>Ajoutez un restaurant</button>
+                <button>Restaurants par notes</button>
+            </div>
+        </div>
+    </header>
+    <section>
+        <div class="row">
+            <div class="col-12 col-md-8 map" id="map"></div>
+            <div class="col-12 col-md-4 list">
+            </div>
+        </div>
+    </section>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <!--<script src="map.js"></script>-->
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC6_wqbr58IHAgGs3sBD1C934TSOYKX0lg"></script> 
+    <script src="bundle.js"></script>  
+</body>
+</html>

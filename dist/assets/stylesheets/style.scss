@@ -1,0 +1,92 @@
+@font-face {
+    font-family: 'airstreamregular';
+    src: url('../fonts/Airstream-webfont.woff') format('woff'),
+}
+
+/* IMPORT */
+@import "variable.scss";
+@import "component.scss";
+@import "palette.scss";
+/* A */
+/* B */
+/* C */
+.case{
+    border: 1px solid $color5;
+    border-radius: 5px;
+    width: 99%;
+    height: 100px;
+    background: white;
+}
+
+/* D */
+/* E */
+/* F */
+.flexboxSb{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.flexboxCenter{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+/* G */
+/* H */
+.headBackground{
+    background: $color2;
+    height: 100px;
+}
+
+/* I */
+/* J */
+/* K */
+/* L */
+.list{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    background: $color4;
+    height: $sectionH;
+}
+
+.logo{
+    width: 200px;
+    height: 50px;
+}
+/* M */
+.map{
+    background: $color1;
+    height: $sectionH;
+}
+#map {
+    height: $sectionH; 
+    width: 100%; 
+   }
+
+/* N */
+/* O */
+/* P */
+/* Q */
+/* R */
+/* S */
+/* T */
+.title{
+    font-family: 'airstreamregular';
+    color: $color5;
+    font-size: 4em;
+    letter-spacing: 6px;
+}
+
+/* U */
+/* V */
+/* W */
+.white{
+    color:white;
+}
+
+/* X */
+/* Y */
+/* Z */
+

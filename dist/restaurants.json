@@ -1,0 +1,130 @@
+[
+    {
+       "restaurantName":"Le Valparaiso",
+       "address":"1 Quai du Brise Lames, 85100 Les Sables-d'Olonne",
+       "lat":46.491007, 
+       "long":-1.794988,
+       "ratings":[
+          {
+             "stars":1,
+             "comment":"Les St Jacques ne sont des st jacques ce sont des pétoncles mal cuisinés ! Le café gourmand trop de chantilly et de gâteau insipides"
+          },
+          {
+             "stars":3,
+             "comment":"J'ai trouvé ça correct, sans plus"
+          }
+       ]
+    },
+    {
+      "restaurantName":"Rosemonde",
+      "address":"10 Quai George V, 85100 Les Sables-d'Olonne",
+      "lat":46.495616, 
+      "long":-1.796273, 
+      "ratings":[
+         {
+            "stars":5,
+            "comment":"Excellent dîner, une satisfaction d'avoir fait une pause pour regarder le menu."
+         },
+         {
+            "stars":2,
+            "comment":"Restaurant correct l'assiette de la mer est un peu trop fournie en algues non comestibles.Par ailleurs il serait de bon ton que le patron vienne à minimum voir ses tables pour ne serait ce dire bonjour où savoir si tout va bien. Pour meme ce sont les clients qui vont vivre le restaurant."
+         },
+         {
+            "stars":5,
+            "comment":"Très bonne cuisine par un maître restaurateur , service accueillant et sympathique. Table en bordure avec vue sur le port."
+         }
+      ]
+   },
+   {
+      "restaurantName":"Le bac à Sable",
+      "address":"7 Prom. de l'Amiral Lafargue, 85100 Les Sables-d'Olonne",
+      "lat": 46.494785,
+      "long":-1.786075, 
+      "ratings":[
+         {
+            "stars":4,
+            "comment":"Quand on peut y manger , accueil très bien et très beau cadre. Pizza très bonne,produits  frais , service souriant :-) Bravo "
+         },
+         {
+            "stars":3,
+            "comment":"J'ai trouvé ça correct, sans plus"
+         }
+      ]
+   },
+   {
+      "restaurantName":"Mama",
+      "address":"23 Prom. Georges Clemenceau, 85100 Les Sables-d'Olonne",
+      "lat": 46.493118, 
+      "long":-1.776369, 
+      "ratings":[
+         {
+            "stars":5,
+            "comment":"Excellent ! Du monde, et pourtant un service impeccable avec des serveurs chaleureux et souriants."
+         },
+         {
+            "stars":5,
+            "comment":"Accueil sympathique. Prise en considération des enfants (poussette rangée, coloriage, plat adapté, petites attentions). Jeune serveur très courtois. Plat simple et succulent."
+         },
+         {
+            "stars":4,
+            "comment":"Vu sur la mer au premier étage, très agréable.  Le service est très rapide et les serveurs sont très attentifs et professionnels. Un très bon moment."
+         },
+         {
+            "stars":5,
+            "comment":"La pâte à pizza est excellente ! La pizza mériterait d'être plus garnie, c'est dommage car c'était presque parfait."
+         }
+      ]
+   },
+   {
+      "restaurantName":"L'Océan Café",
+      "address":"71 Place du Maréchal Foch, 85100 Les Sables-d'Olonne",
+      "lat": 46.494747, 
+      "long":-1.783424, 
+      "ratings":[
+         {
+            "stars":3,
+            "comment":"Très très longue attente pour avoir les plats ( 45min) Cependant les plats sont excellent"
+         },
+         {
+            "stars":1,
+            "comment":"Trop d'attente pour un repas très moyen"
+         },
+         {
+            "stars":1,
+            "comment":"1h d'attente pour se faire servir alors qu'il n'y pas trop de monde, en Janvier, je n'ose pas imaginer en Août !"
+         },
+         {
+            "stars":3,
+            "comment":"Lieu agréable avec vue sur la mer, correct."
+         }
+      ]
+   },
+   {
+      "restaurantName":"L'Escale",
+      "address":"6 Quai Emmanuel Garnier, 85100 Les Sables d'Olonne",
+      "lat":46.496367, 
+      "long":-1.789046,
+      "ratings":[
+         {
+            "stars":4,
+            "comment":"Un excellent restaurant, j'y reviendrai ! Par contre il vaut mieux aimer la viande."
+         },
+         {
+            "stars":5,
+            "comment":"Tout simplement mon restaurant préféré !"
+         },
+         {
+           "stars":5,
+           "comment":"Restaurant excellent et accueil très chaleureux! Nous sommes venus avec une poussette ils ont tout de suite aménagé les tables pour nous installer."
+         },
+         {
+           "stars":3,
+           "comment":"Cuisson au feu de cheminée. Plats corrects. Prix moyen. Service correct. Sans plus"
+         }
+      ]
+   }
+
+]
+
+
+ 
