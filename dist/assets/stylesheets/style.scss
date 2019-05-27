@@ -16,9 +16,14 @@
     width: 100%;
     height: 100px;
     background: white;
+    overflow: scroll;
 }
 
 /* D */
+.detail{
+    height:400px;
+    background: $color2;
+}
 /* E */
 /* F */
 .flexboxSb{
@@ -48,7 +53,7 @@
     justify-content: flex-start;
     align-items: center;
     background: $color1;
-    height: $sectionH;
+    height: auto;
     overflow: scroll;
 }
 
