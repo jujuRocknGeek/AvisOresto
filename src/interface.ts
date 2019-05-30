@@ -1,8 +1,8 @@
 
 var maps:any;
 var marker:any;
-
-/************ initialise la carte**********/
+/*************************************************************/
+/********************* initialise la carte ******************/
 let mapRun = function(){
   return new Promise(function(resolve:any, reject:any){
   navigator.geolocation.getCurrentPosition(function(position) {
@@ -12,7 +12,9 @@ let mapRun = function(){
       };
 maps = new google.maps.Map(document.getElementById('map'), {zoom: 12, center: pos});
 
-/* ajoute icone geolocalisation*/
+
+/*************************************************************/
+/*************** ajoute icone geolocalisation ***************/
 var iconBase = 'https://maps.google.com/mapfiles/kml/shapes/';
 marker = new google.maps.Marker({
   position: pos,
@@ -37,7 +39,7 @@ marker = new google.maps.Marker({
   .catch((error)=>console.log(error))
 
 
-/********************** ************************************/
+/************************************************************************/
 /************ placer les marker google map JSON *************************/
 function markerJson(){
   $.getJSON('restaurants.json',function(data){
@@ -63,6 +65,9 @@ function markerJson(){
   });
 }
 
+
+/*************************************************************/
+/************ charge la requete AJAX *************************/
 function list(){
   var request = new XMLHttpRequest();
   request.open('GET', 'restaurants.json');
@@ -73,46 +78,86 @@ function list(){
       var resto = request.response;
       loadResto(resto);
     }
-  
+
+
+/************************************************************/
+/************ Fonction affiche liste des restos ************/
   function loadResto(json:any){
-      var restos = json[0]['restos'];
 
-      for (let i in restos) {
-        $('.list').append('<div class="case">' + restos[i].restaurantName +'<br>'+ restos[i].address +'</p>');
-        var j:number;
-        var avis:any= restos[i].ratings;
-          for (let j in avis) {
-            console.log(avis)
-            console.log("bonjour")
-            $(".case").append("<div class='comment'>" + "<p class='stars'>" + avis[j].stars + "</p>" + "<p class='commentText'>"+ avis[j].comment  + "</p>" + "</div>" );
-          }
-     }
-        
-       /* avis.forEach((avis:any)=> {
-        $(".case").append("<div class='comment'>" + "<p class='stars'>" + avis[i].stars + "</p>" + "<p class='commentText'>"  + "</p>" + "</div>" ); 
-        })
-      });*/
-      /*for (var i = 0; i <= restos.length;i++) {
-        console.log(restos.length)
-        $('.list').append('<div class="case">' + restos[i].restaurantName +'<br>'+ restos[i].address +'</p>');
+    var restos = json[0]['restos'];
+      
+  for (var i = 0; i < restos.length; i++) {
+    var list = document.createElement('article');
+    list.setAttribute("class", "case");
+    list.setAttribute("data-js", "hide");
+    var restoName = document.createElement('h5');
+    var restoAddress = document.createElement('h6');
+    var restoRating = document.createElement('ul');
+    restoRating.setAttribute("class", "hidden");
 
-        var avis = restos[i].ratings;
-        for (var j = 0; j <= avis.length; j++) {
-              $(".case").append("<div class='comment'>" + "<p class='stars'>" + avis[j].stars + "</p>" + "<p class='commentText'>"  + "</p>" + "</div>" );  
-              console.log(avis[j].stars)      
-        };
-      }*/
+    restoName.textContent = restos[i].restaurantName;
+    restoAddress.textContent = restos[i].address;
+    
+    var rating = restos[i].ratings;
+    console.log(rating.length);
+    for (var j = 0; j <rating.length; j++) {
+      var addNote = document.createElement('li');
+      var addComment = document.createElement('li');
+      var addContent = document.createElement('div');
+      var addContentClass = addContent.setAttribute("class", "ratings");
+      addNote.textContent = rating[j].stars;
+      addComment.textContent =  rating[j].comment;
+      addContent.appendChild(addNote);
+      addContent.appendChild(addComment);
+      restoRating.appendChild(addContent);
+    }
+    
+
+    list.appendChild(restoName);
+    list.appendChild(restoAddress);
+    list.appendChild(restoRating);
+    
+    var section = document.querySelector(".list");
+    section.appendChild(list);
 
   }
 
- 
-      /*$(".stars").hide();
-      $(".commentText").hide();
+/*************************************************************************/
+/************ Défini un lien et un Id a chaque Article et UL afin de pouvoir
+                afficher le détail des avis pour chaque resto ************/
+  var refI=0;
+  $('.case').each(function(){
+  refI++;
+  var newID='#menu'+refI;
+  $(this).attr('href',newID);
+  $(this).val(refI);
+  });
 
-      $(".case").click(function(){
-        $(".stars").show();
-        $(".commentText").show();
-      });*/  
+  var idI=0;
+  $('.hidden').each(function(){
+    idI++;
+    var newID='menu'+idI;
+    $(this).attr('id',newID);
+    $(this).val(idI);
+    });
+
+
+  let hiders = document.querySelectorAll('[data-js="hide"]');
+
+  Array.prototype.forEach.call(hiders, function (hider:any) {
+  let hiderID = hider.getAttribute('href');
+  let hiderTarget = document.querySelector(hiderID);
+  
+  hider.addEventListener('click', function (event:any) {
+  	event.preventDefault();
+    hiderTarget.classList.toggle('-visible');
+    });
+
+  });
+
+
+  }
+
 }
 
 
