@@ -8,11 +8,23 @@
 @import "component.scss";
 @import "palette.scss";
 /* A */
+.averageBox{
+    float: right;
+    background: $color4;
+    border: 1px solid $color4;
+    border-radius: 0px 20px;
+    color: $color1;
+    font-family: 'airstreamregular';
+    font-size: 20px;
+    text-align: center;
+    width: 40px;
+    margin: 5px;
+}
 /* B */
 /* C */
 .case{
     border: 1px solid $color5;
-    border-radius: 5px;
+    border-radius: 0px 20px;
     width: 100%;
     height: auto;
     background: white;
@@ -39,7 +51,7 @@
 /* H */
 .headBackground{
     background: $color2;
-    height: 100px;
+    height: auto;
 }
 
 /* I */
@@ -49,11 +61,11 @@
 .list{
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
+    justify-content: flex-start!important;
     align-items: center;
-    background: $color1;
-    height: auto;
-    overflow: scroll;
+    background: $color2;
+    height: 600px;
+    overflow: auto;
 }
 
 .logo{
@@ -61,16 +73,20 @@
     height: 50px;
 }
 /* M */
-.map{
+#map{
     background: $color1;
-    height: $sectionH;
+    width:100%;
+    height: 600px;
 }
-#map {
-    height: $sectionH; 
-    width: 100%; 
-   }
+
 
 /* N */
+.nogutter > [class*='col-'] {
+    padding-right:0!important;
+    padding-left:0!important;
+    margin-left:0!important;
+    margin-right:0!important;
+}
 /* O */
 /* P */
 p{
@@ -87,13 +103,23 @@ p{
     margin: 5px;
 }
 .ratings{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
     background: white;
     width: 100%;
     border: 1px solid Black;
+    border-radius: 0px 20px;
+    padding: 10px;
     list-style-type: none; 
     margin: 5px;
 }
 /* S */
+#stars{
+    width: 60px;
+    height: 10px;
+}
 /* T */
 .title{
     font-family: 'airstreamregular';
@@ -108,8 +134,6 @@ p{
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
-    margin-left:0;
-    padding-left:0;
     transition: .25s ease;
     max-height: 0;
     opacity: 0;
@@ -120,12 +144,15 @@ p{
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
-    margin-left:0;
-    padding-left:0;
     height: auto;
     max-height: 300px!important;
     opacity: 1!important;
     visibility: visible!important;
+    overflow: scroll;
+}
+::-webkit-scrollbar {
+    width: 0px;
+    background: transparent; /* make scrollbar transparent */
 }
 /* V */
 /* W */
