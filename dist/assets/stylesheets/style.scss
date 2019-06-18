@@ -20,6 +20,17 @@
     width: 40px;
     margin: 5px;
 }
+#addResto{
+    color: $color5;
+    background: $color4;
+    border: 1px solid $color4;
+    border-radius: 0px 20px;
+    font-family: 'airstreamregular';
+    width: 160px;
+    height: 25px;
+    font-size: 20px;
+}
+
 /* B */
 /* C */
 .case{
@@ -37,18 +48,74 @@
 }
 /* E */
 /* F */
-.flexboxSb{
+.flexboxStart{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+#formResto{
+    background: $color1;
+    height:auto;
+}
+form{
     display: flex;
     justify-content: space-between;
     align-items: center;
+    width: 100%;
+    color: $color4;
 }
-.flexboxCenter{
+fieldset{
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
+}
+#formPart1{
+    display: flex;
+    flex-direction: column;
+    width: 95%;
+    font-size: 15px;
+    padding: 20px;
+    height: 350px;
+
+}
+#formPart2{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    width: 95%;
+    height: 350px;
+    font-size: 15px;
+    padding: 20px;
+    padding-bottom: 40px;
+
 }
 /* G */
 /* H */
+.hidden{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    transition: .25s ease;
+    max-height: 0;
+    opacity: 0;
+    visibility: hidden;
+}
+.hidden.-visible{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    height: auto;
+    max-height: 300px!important;
+    opacity: 1!important;
+    visibility: visible!important;
+    overflow: scroll;
+}
+::-webkit-scrollbar {
+    width: 0px;
+    background: transparent; /* make scrollbar transparent */
+}
 .headBackground{
     background: $color2;
     height: auto;
@@ -71,6 +138,10 @@
 .logo{
     width: 200px;
     height: 50px;
+}
+legend{
+    font-family: 'airstreamregular';
+    font-size: 30px !important;
 }
 /* M */
 #map{
@@ -120,6 +191,31 @@ p{
     width: 60px;
     height: 10px;
 }
+#select{
+    color: $color5;
+    background: $color4;
+    border: 1px solid $color4;
+    border-radius: 0px 20px;
+    font-family: 'airstreamregular';
+    font-size: 20px;
+    width: 160px;
+    height: 25px;
+}
+.streetviewDiv{
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    float: left;
+
+}
+#submitBtn{
+    border: 1px solid $color4;
+    border-radius: 0px 20px;
+    background: $color4;
+    color: $color5;
+    font-family: 'airstreamregular';
+    font-size: 25px;
+}
 /* T */
 .title{
     font-family: 'airstreamregular';
@@ -127,33 +223,10 @@ p{
     font-size: 4em;
     letter-spacing: 6px;
 }
-
+textarea{
+    height: 100px;
+}
 /* U */
-.hidden{
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
-    transition: .25s ease;
-    max-height: 0;
-    opacity: 0;
-    visibility: hidden;
-}
-.hidden.-visible{
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
-    height: auto;
-    max-height: 300px!important;
-    opacity: 1!important;
-    visibility: visible!important;
-    overflow: scroll;
-}
-::-webkit-scrollbar {
-    width: 0px;
-    background: transparent; /* make scrollbar transparent */
-}
 /* V */
 /* W */
 .white{
