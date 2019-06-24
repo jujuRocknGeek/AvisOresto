@@ -1,15 +1,23 @@
 import { notDeepStrictEqual } from "assert";
 
 require("./rating.ts");
+var geocoder:any;
 var map:any;
 var marker:any;
 let jsonMarkers:any = [];
 let addRestoMarker:any = [];
 
+/***************  Cacher le Formulaire d'ajout de Restaurant + au clic Show() ********************/
+$("#restoForm").hide();
+$("#addResto").click(()=>{
+  $("#restoForm").show();
+})
+
 /***************************************************************************************/
 /********************* initialise la carte ******************/
 let mapRun = function(){
   return new Promise(function(resolve:any, reject:any){
+  geocoder = new google.maps.Geocoder();
   navigator.geolocation.getCurrentPosition(function(position) {
       var pos:any = {
       lat: position.coords.latitude,
@@ -190,6 +198,7 @@ function list(){
     var restos = json[0]['restos'];
       
   for (var i = 0; i < restos.length; i++) {
+    /************ creer les Listes de restos ************/
     var list = document.createElement('article');
     list.setAttribute("class", "case");
     list.setAttribute("data-js", "hide");
@@ -198,15 +207,64 @@ function list(){
     restoAverage.setAttribute("class", "averageBox");
     var restoAddress = document.createElement('h6');
     var restoRating = document.createElement('ul');
-    restoRating.setAttribute("class", "hidden");
+    restoRating.setAttribute("class", "visible");
+    restoName.textContent = restos[i].restaurantName;
+    restoAddress.textContent = restos[i].address;
+    var imgClose = document.createElement('img');
+    imgClose.src = "assets/icons/close.jpg";
+    imgClose.setAttribute("class", "imgClose");
+    restoRating.appendChild(imgClose);
+
+    /************ creer Div affiche StreetView ************/
     var addStreetview = document.createElement('div');
     addStreetview.setAttribute("class", "streetviewDiv");
     var addImg = document.createElement('img');
     addImg.src = `https://maps.googleapis.com/maps/api/streetview?size=200x100&location=${restos[i].lat},${restos[i].long}&fov=100&heading=235&pitch=10&key=AIzaSyC6_wqbr58IHAgGs3sBD1C934TSOYKX0lg`;
 
-    restoName.textContent = restos[i].restaurantName;
-    restoAddress.textContent = restos[i].address;
+    /************ creer bouton ajouter Commentaire ************/
+    var btnComment = document.createElement('button');
+    btnComment.setAttribute("class","addCommentBtn")
+    btnComment.textContent = "Ajouter un commentaire";
+    restoRating.appendChild(btnComment);
+
+    /************ le Formulaire pour ajouter commentaire ************/
+    var divNoteComment =document.createElement('div');
+    divNoteComment.setAttribute("class", "divNoteComment");
+    var divAddNote = document.createElement('div');
+    divAddNote.setAttribute("class", "btnAddNote");
+    divAddNote.setAttribute("data-js", "btnAddNote");
+    divAddNote.textContent= "Note :"
+    var formNotes = [0,1,2,3,4,5];
+    var formAddNote = document.createElement('select');
+    formAddNote.setAttribute("id", "addRate");
+
+    while(formNotes.length){
+      var notes:number = formNotes.pop();
+      var opt = new Option(`${notes}`);
+      formAddNote.options[formAddNote.options.length] = opt;
+    }
+    divAddNote.appendChild(formAddNote);
+  
+
+    var divAddComment = document.createElement('div');
+    divAddComment.setAttribute("class", "btnAddComment");
+    divAddComment.setAttribute("data-js", "btnAddComment");
+    divAddComment.textContent= "Avis :"
+    var formAddComment = document.createElement('textarea');
+    formAddComment.setAttribute("id", "addCommentArea");
+    divAddComment.appendChild(formAddComment);
+
+    var sendComment = document.createElement('button');
+    sendComment.setAttribute("class","sendCommentBtn")
+    sendComment.textContent = "Envoyez";
     
+    divNoteComment.appendChild(divAddNote);
+    divNoteComment.appendChild(divAddComment);
+    divNoteComment.appendChild(sendComment);
+    restoRating.appendChild(divNoteComment);
+
+
+    /************ creer elements qui contient les avis ************/
     var rating = restos[i].ratings;
     for (var j = 0; j <rating.length; j++) {
       var addNote = document.createElement('li');
@@ -221,8 +279,8 @@ function list(){
       addStreetview.appendChild(addImg);
       console.log(restos[j].lat+","+restos[j].long);
     }
-    
 
+    /************ ajouter le tout dans la liste ************/
     list.appendChild(restoName);
     list.appendChild(restoAverage);
     list.appendChild(restoAddress);
@@ -231,7 +289,7 @@ function list(){
     
     var section = document.querySelector(".list");
     section.appendChild(list);
-
+    $("ul").hide();
   }
 /***************************************************************************************/
 
@@ -250,33 +308,49 @@ function list(){
   });
 
   var idI=0;
-  $('.hidden').each(function(){
+  $('.visible').each(function(){
     idI++;
     var newID='menu'+idI;
     $(this).attr('id',newID);
     $(this).val(idI);
-    });
+  });
 
+  var idClose=0;
+  $('.imgClose').each(function(){
+    idClose++;
+    var newID='close'+idClose;
+    $(this).attr('id',newID);
+  });
 
   let hiders = document.querySelectorAll('[data-js="hide"]');
 
   Array.prototype.forEach.call(hiders, function (hider:any) {
   let hiderID = hider.getAttribute('href');
-  let hiderTarget = document.querySelector(hiderID);
-  
+  let hiderTarget = $(`${hiderID}`);
   hider.addEventListener('click', function (event:any) {
-  	event.preventDefault();
-    hiderTarget.classList.toggle('-visible');
+    $(`${hiderID}`).show();
+    event.stopPropagation();
     });
+  });
+    
 
+  let imgSel = document.querySelectorAll('.imgClose');
+
+  Array.prototype.forEach.call(imgSel, function (hider:any) {
+  let hiderId = hider.getAttribute('id');
+  let hiderTarg= $(`${hiderId}`);
+  console.log(hiderId)
+  $(`#${hiderId}`).click((e)=>{
+    e.preventDefault();
+    console.log("clic sur "+ hiderId)
+    $("ul").hide();
+    event.stopPropagation();
+    })
   });
 
-
   }
-
 }
 /***************************************************************************************/
-
 
 
 
@@ -352,14 +426,28 @@ function average(json:any){
 
 /***************************************************************************************/
 /***************  Recupère Infos Formulaire d'ajout de restaurants  ********************/
-$("#submitBtn").click(()=>{
+$("#submitBtn").click((event:any)=>{
+  $("#restoForm").hide();
   console.log("coucou");
   var restoFormName:any = $("#nom").val();
   var restoFormAdress:any = $("#adresse").val();
   var restoFormNote:any = $("#rate").val();
   var restoFormAvis:any = $("#avis").val();
 
-
+/*************** Ajoute le marker sur la map ********************/
+    geocoder.geocode( { 'address': restoFormAdress}, function(results:any, status:any) {
+      if (status == google.maps.GeocoderStatus.OK) {
+        map.setCenter(results[0].geometry.location);
+        var marker = new google.maps.Marker({
+            map: map,
+            position: results[0].geometry.location,
+            title: restoFormName
+        });
+      } else {
+        alert('Geocode was not successful for the following reason: ' + status);
+      }
+    });
+  /********* on crée les élements Html de notre nouvel Article list  ***********/
   var list = document.createElement('article');
   list.setAttribute("class", "case");
   list.setAttribute("id", "caseAdd");
@@ -369,7 +457,7 @@ $("#submitBtn").click(()=>{
   restoAverage.setAttribute("class", "averageBox");
   var restoAddress = document.createElement('h6');
   var restoRating = document.createElement('ul');
-  restoRating.setAttribute("class", "hidden");
+  restoRating.setAttribute("class", "visible");
   restoRating.setAttribute("id", "ulAdd");
   var addStreetview = document.createElement('div');
   addStreetview.setAttribute("class", "streetviewDiv");
@@ -381,6 +469,55 @@ $("#submitBtn").click(()=>{
   var addContent = document.createElement('div');
   var addContentClass = addContent.setAttribute("class", "ratings");
 
+  var imgClose = document.createElement('img');
+  imgClose.src = "assets/icons/close.jpg";
+  imgClose.setAttribute("class", "imgClose");
+  restoRating.appendChild(imgClose);
+  
+
+  /************ creer bouton ajouter Commentaire ************/
+  var btnComment = document.createElement('button');
+  btnComment.setAttribute("class","addCommentBtn")
+  btnComment.textContent = "Ajouter un commentaire";
+  restoRating.appendChild(btnComment);
+
+  /************ le Formulaire pour ajouter commentaire ************/
+  var divNoteComment =document.createElement('div');
+  divNoteComment.setAttribute("class", "divNoteComment");
+  var divAddNote = document.createElement('div');
+  divAddNote.setAttribute("class", "btnAddNote");
+  divAddNote.setAttribute("data-js", "btnAddNote");
+  divAddNote.textContent= "Note :"
+  var formNotes = [0,1,2,3,4,5];
+  var formAddNote = document.createElement('select');
+  formAddNote.setAttribute("id", "addRate");
+  
+    while(formNotes.length){
+      var notes:number = formNotes.pop();
+      var opt = new Option(`${notes}`);
+      formAddNote.options[formAddNote.options.length] = opt;
+    }
+    divAddNote.appendChild(formAddNote);
+    
+  
+  var divAddComment = document.createElement('div');
+  divAddComment.setAttribute("class", "btnAddComment");
+  divAddComment.setAttribute("data-js", "btnAddComment");
+  divAddComment.textContent= "Avis :"
+  var formAddComment = document.createElement('textarea');
+  formAddComment.setAttribute("id", "addCommentArea");
+  divAddComment.appendChild(formAddComment);
+  
+  var sendComment = document.createElement('button');
+  sendComment.setAttribute("class","sendCommentBtn")
+  sendComment.textContent = "Envoyez";
+      
+  divNoteComment.appendChild(divAddNote);
+  divNoteComment.appendChild(divAddComment);
+  divNoteComment.appendChild(sendComment);
+  restoRating.appendChild(divNoteComment);
+  
+ /************ ajout dans la liste ************/
   restoName.append(restoFormName);
   restoAddress.append(restoFormAdress);
   addStreetview.append(addImg);
@@ -389,6 +526,8 @@ $("#submitBtn").click(()=>{
   addContent.appendChild(addNote);
   addContent.appendChild(addComment);
   restoRating.appendChild(addContent);
+  restoAverage.append(restoFormNote);
+  
 
   list.appendChild(restoName);
   list.appendChild(restoAverage);
@@ -399,12 +538,17 @@ $("#submitBtn").click(()=>{
 
   var section = document.querySelector(".list");
   section.appendChild(list);
+  $("#ulAdd").hide();
+  event.stopPropagation();
 
   $("#caseAdd").click(function (event:any) {
-    var hiderTarget = document.querySelector('ul[id="ulAdd"]')
-    hiderTarget.classList.toggle('-visible');
-    console.log("coucou ul")
-    });
+    $("#ulAdd").show();
+    event.stopPropagation();
+    $('.imgClose').click((event)=>{
+      $("#ulAdd").hide();
+      event.stopPropagation();
+      })
+});
 
     let note = $('li[class="liAdd"]').html();
     console.log(note)
@@ -428,30 +572,9 @@ $("#submitBtn").click(()=>{
       $('li[class="liAdd"]').html(etoiles.five);
       break;
     }
-  
-
-  /*var addNote = document.createElement('li');
-  var addComment = document.createElement('li');
-  var addContent = document.createElement('div');
-  var addContentClass = addContent.setAttribute("class", "ratings");
-  addNote.textContent = rating[j].stars;
-  addComment.textContent =  rating[j].comment;
-  addContent.appendChild(addNote);
-  addContent.appendChild(addComment);
-  restoRating.appendChild(addContent);
-  addStreetview.appendChild(addImg);
-  console.log(restos[j].lat+","+restos[j].long);
-
-  list.appendChild(restoName);
-  list.appendChild(restoAverage);
-  list.appendChild(restoAddress);
-  list.appendChild(addStreetview);
-  list.appendChild(restoRating);
-  
-  var section = document.querySelector(".list");
-  section.appendChild(list);*/
 
 })
+
 
 
 /***************************************************************************************/

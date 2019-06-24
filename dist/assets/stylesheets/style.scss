@@ -30,8 +30,20 @@
     height: 25px;
     font-size: 20px;
 }
-
+.addCommentBtn{
+    color: $color5;
+    background: $color4;
+    border: 1px solid $color4;
+    border-radius: 0px 20px;
+    font-family: 'airstreamregular';
+    width: 160px;
+    height: 70px;
+    font-size: 20px;
+}
 /* B */
+.btnAddNote, .btnAddComment{
+    width: 95%;
+}
 /* C */
 .case{
     border: 1px solid $color5;
@@ -45,6 +57,12 @@
 .detail{
     height:400px;
     background: $color3;
+}
+.divNoteComment{
+    border: 1px solid $color4;
+    border-radius: 0px 20px;
+    margin: 10px;
+    padding: 5px;
 }
 /* E */
 /* F */
@@ -91,25 +109,13 @@ fieldset{
 }
 /* G */
 /* H */
-.hidden{
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
-    transition: .25s ease;
-    max-height: 0;
-    opacity: 0;
-    visibility: hidden;
-}
-.hidden.-visible{
+.visible{
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
     height: auto;
-    max-height: 300px!important;
-    opacity: 1!important;
-    visibility: visible!important;
+    max-height: 300px;
     overflow: scroll;
 }
 ::-webkit-scrollbar {
@@ -122,6 +128,9 @@ fieldset{
 }
 
 /* I */
+.imgClose{
+    margin: 10px;
+}
 /* J */
 /* K */
 /* L */
@@ -216,6 +225,16 @@ p{
     font-family: 'airstreamregular';
     font-size: 25px;
 }
+.sendCommentBtn{
+    color: $color5;
+    background: $color4;
+    border: 1px solid $color4;
+    border-radius: 0px 20px;
+    font-family: 'airstreamregular';
+    width: 100px;
+    height: 40px;
+    font-size: 20px;
+}
 /* T */
 .title{
     font-family: 'airstreamregular';
@@ -224,6 +243,7 @@ p{
     letter-spacing: 6px;
 }
 textarea{
+    width: 100%;
     height: 100px;
 }
 /* U */
