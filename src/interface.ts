@@ -1,6 +1,3 @@
-import { notDeepStrictEqual } from "assert";
-
-require("./rating.ts");
 var geocoder:any;
 var map:any;
 var marker:any;
@@ -224,12 +221,14 @@ function list(){
     /************ creer bouton ajouter Commentaire ************/
     var btnComment = document.createElement('button');
     btnComment.setAttribute("class","addCommentBtn")
+    btnComment.setAttribute("href",`#divNoteComment${i}`)
     btnComment.textContent = "Ajouter un commentaire";
     restoRating.appendChild(btnComment);
 
     /************ le Formulaire pour ajouter commentaire ************/
     var divNoteComment =document.createElement('div');
     divNoteComment.setAttribute("class", "divNoteComment");
+    divNoteComment.setAttribute("id",`divNoteComment${i}`)
     var divAddNote = document.createElement('div');
     divAddNote.setAttribute("class", "btnAddNote");
     divAddNote.setAttribute("data-js", "btnAddNote");
@@ -289,6 +288,8 @@ function list(){
     
     var section = document.querySelector(".list");
     section.appendChild(list);
+
+    $(".divNoteComment").hide();
     $("ul").hide();
   }
 /***************************************************************************************/
@@ -346,6 +347,17 @@ function list(){
     $("ul").hide();
     event.stopPropagation();
     })
+  });
+
+  let addCommentId = document.querySelectorAll('.addCommentBtn');
+
+  Array.prototype.forEach.call(addCommentId, function (hider:any) {
+  let hiderid = hider.getAttribute('href');
+  console.log(hiderid)
+  hider.addEventListener('click', function (event:any) {
+    $(`${hiderid}`).show();
+    event.stopPropagation();
+    });
   });
 
   }
@@ -574,9 +586,3 @@ $("#submitBtn").click((event:any)=>{
     }
 
 })
-
-
-
-/***************************************************************************************/
-/*Object.keys().length   console.log(Object.keys(json[0]['restos']).length) */
-
