@@ -65,6 +65,8 @@ function addResto(){
             map: map
           });
           addRestoMarker.push(marker);
+          $("#restoForm").show();
+          console.log(location)
         }
 }
 
@@ -231,7 +233,7 @@ function list(){
     divNoteComment.setAttribute("id",`divNoteComment${i}`)
     var divAddNote = document.createElement('div');
     divAddNote.setAttribute("class", "btnAddNote");
-    divAddNote.setAttribute("data-js", "btnAddNote");
+    divAddNote.setAttribute("id",`divAddNote${i}`);
     divAddNote.textContent= "Note :"
     var formNotes = [0,1,2,3,4,5];
     var formAddNote = document.createElement('select');
@@ -247,14 +249,15 @@ function list(){
 
     var divAddComment = document.createElement('div');
     divAddComment.setAttribute("class", "btnAddComment");
-    divAddComment.setAttribute("data-js", "btnAddComment");
+    divAddComment.setAttribute("id",`divAddComment${i}`);
     divAddComment.textContent= "Avis :"
     var formAddComment = document.createElement('textarea');
     formAddComment.setAttribute("id", "addCommentArea");
     divAddComment.appendChild(formAddComment);
 
     var sendComment = document.createElement('button');
-    sendComment.setAttribute("class","sendCommentBtn")
+    sendComment.setAttribute("class","sendCommentBtn");
+    sendComment.setAttribute("id",`sendCommentBtn${i}`);
     sendComment.textContent = "Envoyez";
     
     divNoteComment.appendChild(divAddNote);
@@ -350,12 +353,45 @@ function list(){
   });
 
   let addCommentId = document.querySelectorAll('.addCommentBtn');
-
   Array.prototype.forEach.call(addCommentId, function (hider:any) {
   let hiderid = hider.getAttribute('href');
-  console.log(hiderid)
   hider.addEventListener('click', function (event:any) {
     $(`${hiderid}`).show();
+    event.stopPropagation();
+    });
+  });
+
+  let sendCommentId = $('.sendCommentBtn');
+  Array.prototype.forEach.call(sendCommentId, function (hider:any) {
+  let selectBtn = hider.getAttribute('id');
+  hider.addEventListener('click', function (event:any) {
+    let selectUl= $(`#${selectBtn}`).parents(".visible").attr('id');
+    console.log(selectUl)
+    let contentRate = $(`#${selectBtn}`).parents("div").attr('id');
+    let divRate = $(`#${contentRate}`).children('div').attr('id');
+    let divComment = $(`#${contentRate}`).children('div').next().attr('id');
+      var restoFormNote:any = $(`div[id=${divRate}] #addRate`).val();
+      var restoFormAvis:any = $(`div[id=${divComment}] #addCommentArea`).val();
+      console.log(restoFormAvis)
+      console.log(restoFormNote)
+
+      /********* on crée les élements Html de notre nouvel Avis  ***********/
+      var addNote = document.createElement('li');
+      addNote.setAttribute("class", "liAdd");
+      var addComment = document.createElement('li');
+      var addContent = document.createElement('div');
+      var addContentClass = addContent.setAttribute("class", "ratings");
+      
+     /************ ajout dans la liste ************/
+      addNote.append(restoFormNote);
+      addComment.append(restoFormAvis)
+      addContent.appendChild(addNote);
+      addContent.appendChild(addComment);
+      $(`#${selectUl}`).append(addContent);
+      $(`#${contentRate}`).hide();
+      stars();
+
+      $(`div[id=${divComment}] #addCommentArea`).find("textarea").val("").end();
     event.stopPropagation();
     });
   });
@@ -561,6 +597,7 @@ $("#submitBtn").click((event:any)=>{
       event.stopPropagation();
       })
 });
+
 
     let note = $('li[class="liAdd"]').html();
     console.log(note)
