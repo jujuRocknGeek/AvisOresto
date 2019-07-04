@@ -67,129 +67,145 @@ function restoPlace(){
       radius: '500',
       type: ['restaurant']
     };
-  
-  function retour(results:any, status:any) {
-  if (status == google.maps.places.PlacesServiceStatus.OK) {
-        for (var i = 0; i < results.length; i++) {
-          var place = results[i];
-
-          var request2 = {
-            placeId: place.place_id
-          };
-          service.getDetails(request2, callback) 
-          var j=0;
-          function callback(review:any, status:any) {
-            if (status == google.maps.places.PlacesServiceStatus.OK) {
-            console.log("coucou")
-            console.log(j)
-            /************ creer les Listes de restos ************/
-            var list = document.createElement('article');
-            list.setAttribute("class", "case");
-            list.setAttribute("data-js", "hide");
-            list.setAttribute("href",`menuP${j}`)
-            var restoName = document.createElement('h5');
-            var restoAverage = document.createElement('aside');
-            restoAverage.setAttribute("class", "averageBox");
-            var restoAddress = document.createElement('h6');
-            var restoRating = document.createElement('ul');
-            restoRating.setAttribute("class", "visible");
-            restoRating.setAttribute("id", `menuP${j}`);
-            restoName.textContent = review.name;
-            restoAddress.textContent = review.vicinity;
-            var imgClose = document.createElement('img');
-            imgClose.src = "assets/icons/close.jpg";
-            imgClose.setAttribute("class", "imgClose");
-            restoRating.appendChild(imgClose);
-
-            /************ creer Div affiche StreetView ************/
-            var addStreetview = document.createElement('div');
-            addStreetview.setAttribute("class", "streetviewDiv");
-            /* var addImg = document.createElement('img');
-            addImg.src = `https://maps.googleapis.com/maps/api/streetview?size=200x100&location=${restos[i].lat},${restos[i].long}&fov=100&heading=235&pitch=10&key=AIzaSyC6_wqbr58IHAgGs3sBD1C934TSOYKX0lg`;
-
-            /************ creer bouton ajouter Commentaire ************/
-            var btnComment = document.createElement('button');
-            btnComment.setAttribute("class","addCommentBtn")
-            btnComment.setAttribute("href",`#divNoteCommentP${j}`)
-            btnComment.textContent = "Ajouter un commentaire";
-            restoRating.appendChild(btnComment);
-
-            /************ le Formulaire pour ajouter commentaire ************/
-            var divNoteComment =document.createElement('div');
-            divNoteComment.setAttribute("class", "divNoteComment");
-            divNoteComment.setAttribute("id",`divNoteCommentP${j}`)
-            var divAddNote = document.createElement('div');
-            divAddNote.setAttribute("class", "btnAddNote");
-            divAddNote.setAttribute("id",`divAddNoteP${j}`);
-            divAddNote.textContent= "Note :"
-            var formNotes = [0,1,2,3,4,5];
-            var formAddNote = document.createElement('select');
-            formAddNote.setAttribute("id", "addRateP");
-
-            while(formNotes.length){
-              var notes:number = formNotes.pop();
-              var opt = new Option(`${notes}`);
-              formAddNote.options[formAddNote.options.length] = opt;
-            }
-            divAddNote.appendChild(formAddNote);
-
-
-            var divAddComment = document.createElement('div');
-            divAddComment.setAttribute("class", "btnAddComment");
-            divAddComment.setAttribute("id",`divAddCommentP${j}`);
-            divAddComment.textContent= "Avis :"
-            var formAddComment = document.createElement('textarea');
-            formAddComment.setAttribute("id", "addCommentAreaP");
-            divAddComment.appendChild(formAddComment);
-
-            var sendComment = document.createElement('button');
-            sendComment.setAttribute("class","sendCommentBtn");
-            sendComment.setAttribute("id",`sendCommentBtnP${j}`);
-            sendComment.textContent = "Envoyez";
-            
-            divNoteComment.appendChild(divAddNote);
-            divNoteComment.appendChild(divAddComment);
-            divNoteComment.appendChild(sendComment);
-            restoRating.appendChild(divNoteComment);
-
-            /************ creer elements qui contient les avis ************/
-            var rating = review.reviews;
-            console.log(rating)
-            for (var k = 0; k <rating.length; k++) {
-              var addNote = document.createElement('li');
-              var addComment = document.createElement('li');
-              var addContent = document.createElement('div');
-              var addContentClass = addContent.setAttribute("class", "ratings");
-              addNote.textContent = rating[k].rating;
-              addComment.textContent =  rating[k].text;
-              addContent.appendChild(addNote);
-              addContent.appendChild(addComment);
-              restoRating.appendChild(addContent);
-             /* addStreetview.appendChild(addImg);*/
-            }
-
-            /************ ajouter le tout dans la liste ************/
-            list.appendChild(restoName);
-            list.appendChild(restoAverage);
-            list.appendChild(restoAddress);
-            list.appendChild(addStreetview);
-            list.appendChild(restoRating);
-            
-            var section = document.querySelector(".list");
-            section.appendChild(list);
-
-            $(".divNoteComment").hide();
-            $("ul").hide();
-            createMarker(review);
-            j++;
-        }
-  }  
-          }
-        }
-  }
     service = new google.maps.places.PlacesService(map);
     service.nearbySearch(request, retour);
     map.setCenter(pos);
+
+  function retour(results:any, status:any) {
+    if (status == google.maps.places.PlacesServiceStatus.OK) {
+      for (var i = 0; i < results.length; i++) {
+        var place = results[i];
+
+        var request2 = {
+          placeId: place.place_id
+        };
+        service.getDetails(request2, callback) 
+        var j=0;
+  function callback(review:any, status:any) {
+    if (status == google.maps.places.PlacesServiceStatus.OK) {
+
+      /************ creer les Listes de restos ************/
+      var list = document.createElement('article');
+      list.setAttribute("class", "case");
+      list.setAttribute("data-js", "hide");
+      list.setAttribute("href",`#menuP${j}`)
+      var restoName = document.createElement('h5');
+      var restoAverage = document.createElement('aside');
+      restoAverage.setAttribute("class", "averageBox");
+      restoAverage.textContent = review.rating;
+      var restoAddress = document.createElement('h6');
+      var restoRating = document.createElement('ul');
+      restoRating.setAttribute("class", "visible");
+      restoRating.setAttribute("id", `menuP${j}`);
+      restoName.textContent = review.name;
+      restoAddress.textContent = review.vicinity;
+      var imgClose = document.createElement('img');
+      imgClose.src = "assets/icons/close.jpg";
+      imgClose.setAttribute("class", "imgClose");
+      imgClose.setAttribute("id", `closeP${j}`);
+      restoRating.appendChild(imgClose);
+
+      /************ creer Div affiche PlacePhotos ************/
+      var addStreetview = document.createElement('div');
+      addStreetview.setAttribute("class", "streetviewDiv");
+      addStreetview.appendChild(createPhoto(review, 200, 100))
+
+      function createPhoto(place:any, larg:any, long:any) {
+        var photos = place.photos;
+        if (!photos) {
+          return;
+        }
+        var img = document.createElement("img");
+        for (var i = 0; i < photos.length; i++) {
+          img.src = photos[i].getUrl({
+            'maxWidth': larg,
+            'maxHeight': long
+          });
+          return img;
+        }
+      }
+    
+      /************ creer bouton ajouter Commentaire ************/
+      var btnComment = document.createElement('button');
+      btnComment.setAttribute("class","addCommentBtn")
+      btnComment.setAttribute("href",`#divNoteCommentP${j}`)
+      btnComment.textContent = "Ajouter un commentaire";
+      restoRating.appendChild(btnComment);
+
+      /************ le Formulaire pour ajouter commentaire ************/
+      var divNoteComment =document.createElement('div');
+      divNoteComment.setAttribute("class", "divNoteComment");
+      divNoteComment.setAttribute("id",`divNoteCommentP${j}`)
+      var divAddNote = document.createElement('div');
+      divAddNote.setAttribute("class", "btnAddNote");
+      divAddNote.setAttribute("id",`divAddNoteP${j}`);
+      divAddNote.textContent= "Note :"
+      var formNotes = [0,1,2,3,4,5];
+      var formAddNote = document.createElement('select');
+      formAddNote.setAttribute("id", "addRateP");
+
+      while(formNotes.length){
+        var notes:number = formNotes.pop();
+        var opt = new Option(`${notes}`);
+        formAddNote.options[formAddNote.options.length] = opt;
+      }
+      divAddNote.appendChild(formAddNote);
+
+
+      var divAddComment = document.createElement('div');
+      divAddComment.setAttribute("class", "btnAddComment");
+      divAddComment.setAttribute("id",`divAddCommentP${j}`);
+      divAddComment.textContent= "Avis :"
+      var formAddComment = document.createElement('textarea');
+      formAddComment.setAttribute("id", "addCommentAreaP");
+      divAddComment.appendChild(formAddComment);
+
+      var sendComment = document.createElement('button');
+      sendComment.setAttribute("class","sendCommentBtnP");
+      sendComment.setAttribute("id",`sendCommentBtnP${j}`);
+      sendComment.textContent = "Envoyez";
+            
+      divNoteComment.appendChild(divAddNote);
+      divNoteComment.appendChild(divAddComment);
+      divNoteComment.appendChild(sendComment);
+      restoRating.appendChild(divNoteComment);
+
+      /************ creer elements qui contient les avis ************/
+      var rating = review.reviews;
+      for (var k = 0; k <rating.length; k++) {
+        var addNote = document.createElement('li');
+        var addComment = document.createElement('li');
+        var addContent = document.createElement('div');
+        var addContentClass = addContent.setAttribute("class", "ratings");
+        addNote.textContent = rating[k].rating;
+        addComment.textContent =  rating[k].text;
+        addContent.appendChild(addNote);
+        addContent.appendChild(addComment);
+        restoRating.appendChild(addContent);
+       /* addStreetview.appendChild(addImg);*/
+      }
+
+  /************ ajouter le tout dans la liste ************/
+      list.appendChild(restoName);
+      list.appendChild(restoAverage);
+      list.appendChild(restoAddress);
+      list.appendChild(addStreetview);
+      list.appendChild(restoRating);
+            
+      var section = document.querySelector(".list");
+      section.appendChild(list);
+
+      $(".divNoteComment").hide();
+      $("ul").hide();
+      createMarker(review);
+      j++;
+    }
+    stars();
+    auclic();
+    } 
+  }
+  }
+}
 
   function createMarker(place:any) {
     var iconResto = {
@@ -207,25 +223,22 @@ function restoPlace(){
         infowindow.open(map, this);
       });
   }
-
   },
-function():void{
-  console.log("c'est ok")
+
+  function():void{
   handleLocationError(true, infowindow, map.getCenter());
-});
-} else {
+  });
+  } else {
 // Browser doesn't support Geolocation
-console.log("pas ok")
-handleLocationError(false, infowindow, map.getCenter());
-}
+  handleLocationError(false, infowindow, map.getCenter());
+  }
 
   function handleLocationError(browserHasGeolocation:any, infowindow:any, pos:any) {
     infowindow.setPosition(pos);
     infowindow.setContent(browserHasGeolocation ?
       'Error: The Geolocation service failed.' :
       'Error: Your browser doesn\'t support geolocation.');
-    }
-    auclic();
+  }
 }
 
 /***************************************************************************************/
@@ -619,41 +632,6 @@ $("#submitBtn").click((event:any)=>{
  });
 stars();
  }
-
- 
- let sendCommentId = $('.sendCommentBtn');
- Array.prototype.forEach.call(sendCommentId, function (hider:any) {
- let selectBtn = hider.getAttribute('id');
- hider.addEventListener('click', function (event:any) {
-   let selectUl= $(`#${selectBtn}`).parents(".visible").attr('id');
-   console.log(selectUl)
-   let contentRate = $(`#${selectBtn}`).parents("div").attr('id');
-   let divRate = $(`#${contentRate}`).children('div').attr('id');
-   let divComment = $(`#${contentRate}`).children('div').next().attr('id');
-     var restoFormNote:any = $(`div[id=${divRate}] #addRate`).val();
-     var restoFormAvis:any = $(`div[id=${divComment}] #addCommentArea`).val();
-     console.log(restoFormAvis)
-     console.log(restoFormNote)
-
-     /********* on crée les élements Html de notre nouvel Avis  ***********/
-     var addNote = document.createElement('li');
-     addNote.setAttribute("class", "liAdd");
-     var addComment = document.createElement('li');
-     var addContent = document.createElement('div');
-     var addContentClass = addContent.setAttribute("class", "ratings");
-     
-    /************ ajout dans la liste ************/
-     addNote.append(restoFormNote);
-     addComment.append(restoFormAvis)
-     addContent.appendChild(addNote);
-     addContent.appendChild(addComment);
-     $(`#${selectUl}`).append(addContent);
-     $(`#${contentRate}`).hide();
-     stars();
-     $("textarea").val("");
-   event.stopPropagation();
-   });
- });
   }
 }
 /***************************************************************************************/
@@ -731,10 +709,80 @@ function average(json:any){
 
 
 function auclic(){
+
+
+  let sendCommentIdP = $('.sendCommentBtnP');
+  Array.prototype.forEach.call(sendCommentIdP, function (hider:any) {
+  let selectBtn = hider.getAttribute('id');
+  hider.addEventListener('click', function (event:any) {
+    let selectUl= $(`#${selectBtn}`).parents(".visible").attr('id');
+    console.log(selectUl)
+    let contentRate = $(`#${selectBtn}`).parents("div").attr('id');
+    let divRate = $(`#${contentRate}`).children('div').attr('id');
+    let divComment = $(`#${contentRate}`).children('div').next().attr('id');
+      var restoFormNote:any = $(`div[id=${divRate}] #addRateP`).val();
+      var restoFormAvis:any = $(`div[id=${divComment}] #addCommentAreaP`).val();
+      console.log(restoFormAvis)
+      console.log(restoFormNote)
+ 
+      /********* on crée les élements Html de notre nouvel Avis  ***********/
+      var addNote = document.createElement('li');
+      addNote.setAttribute("class", "liAdd");
+      var addComment = document.createElement('li');
+      var addContent = document.createElement('div');
+      var addContentClass = addContent.setAttribute("class", "ratings");
+      
+     /************ ajout dans la liste ************/
+      addNote.append(restoFormNote);
+      addComment.append(restoFormAvis)
+      addContent.appendChild(addNote);
+      addContent.appendChild(addComment);
+      $(`#${selectUl}`).append(addContent);
+      $(`#${contentRate}`).hide();
+      stars();
+      $("textarea").val("");
+    event.stopPropagation();
+    });
+  });
+
+
+
+  let sendCommentId = $('.sendCommentBtn');
+  Array.prototype.forEach.call(sendCommentId, function (hider:any) {
+  let selectBtn = hider.getAttribute('id');
+  hider.addEventListener('click', function (event:any) {
+    let selectUl= $(`#${selectBtn}`).parents(".visible").attr('id');
+    console.log(selectUl)
+    let contentRate = $(`#${selectBtn}`).parents("div").attr('id');
+    let divRate = $(`#${contentRate}`).children('div').attr('id');
+    let divComment = $(`#${contentRate}`).children('div').next().attr('id');
+      var restoFormNote:any = $(`div[id=${divRate}] #addRate`).val();
+      var restoFormAvis:any = $(`div[id=${divComment}] #addCommentArea`).val();
+      console.log(restoFormAvis)
+      console.log(restoFormNote)
+ 
+      /********* on crée les élements Html de notre nouvel Avis  ***********/
+      var addNote = document.createElement('li');
+      addNote.setAttribute("class", "liAdd");
+      var addComment = document.createElement('li');
+      var addContent = document.createElement('div');
+      var addContentClass = addContent.setAttribute("class", "ratings");
+      
+     /************ ajout dans la liste ************/
+      addNote.append(restoFormNote);
+      addComment.append(restoFormAvis)
+      addContent.appendChild(addNote);
+      addContent.appendChild(addComment);
+      $(`#${selectUl}`).append(addContent);
+      $(`#${contentRate}`).hide();
+      stars();
+      $("textarea").val("");
+    event.stopPropagation();
+    });
+  });
   /***************************************************************************************/
   /************ evenements au clic ************/
   let hiders = document.querySelectorAll('[data-js="hide"]');
-  
   Array.prototype.forEach.call(hiders, function (hider:any) {
   let hiderID = hider.getAttribute('href');
   let hiderTarget = $(`${hiderID}`);
