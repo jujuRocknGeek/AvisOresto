@@ -1,5 +1,4 @@
-[{
-"restos":[    
+[  
    {
        "restaurantName":"Le Valparaiso",
        "address":"1 Quai du Brise Lames, 85100 Les Sables-d'Olonne",
@@ -124,7 +123,7 @@
          }
       ]
    }
-]}
+
 ]
 
 
