@@ -90,6 +90,7 @@ function restoGooglePlace() {
                   var list = document.createElement("article");
                   list.setAttribute("class", "case");
                   list.setAttribute("data-js", "hide");
+                  list.setAttribute("id", `caseP${j}`);
                   list.setAttribute("href", `#menuP${j}`);
                   var restoName = document.createElement("h5");
                   var restoAverage = document.createElement("aside");
@@ -162,7 +163,7 @@ function restoGooglePlace() {
                   divAddComment.appendChild(formAddComment);
 
                   var sendComment = document.createElement("button");
-                  sendComment.setAttribute("class", "sendCommentBtnP");
+                  sendComment.setAttribute("class", "sendCommentBtn");
                   sendComment.setAttribute("id", `sendCommentBtnP${j}`);
                   sendComment.textContent = "Envoyez";
 
@@ -207,9 +208,9 @@ function restoGooglePlace() {
                 /******************* évenements aux clics ********************/
                 stars();
                 auclic();
-                selectUl = $(`#sendCommentBtnP${j}`);
+
                 $(`#sendCommentBtnP${j}`).click(function(event: any) {
-                  console.log("click");
+
                   let selectUl = $(`#sendCommentBtnP${j}`)
                     .parents(".visible")
                     .attr("id");
@@ -250,7 +251,7 @@ function restoGooglePlace() {
                   $(`#${contentRate}`).hide();
                   stars();
                   $("textarea").val("");
-                  newAverage();
+                  newAverage(selectUl);
                   event.stopPropagation();
                 });
               }
@@ -445,6 +446,7 @@ function list() {
       var list = document.createElement("article");
       list.setAttribute("class", "case");
       list.setAttribute("data-js", "hide");
+      list.setAttribute("id", `case${i}`)
       list.setAttribute("href", `#menu${i}`);
       var restoName = document.createElement("h5");
       var restoAverage = document.createElement("aside");
@@ -540,11 +542,55 @@ function list() {
       var section = document.querySelector(".list");
       section.appendChild(list);
 
+
+       /****************** Clic sur envoi commentaire Resto Json ********************/
+  $(`#sendCommentBtn${i}`).click(function(event: any) {
+      let selectUl = $(this)
+        .parents(".visible")
+        .attr("id");
+      console.log(selectUl);
+      let contentRate = $(this)
+        .parents("div")
+        .attr("id");
+      let divRate = $(`#${contentRate}`)
+        .children("div")
+        .attr("id");
+      let divComment = $(`#${contentRate}`)
+        .children("div")
+        .next()
+        .attr("id");
+      var restoFormNote: any = $(`div[id=${divRate}] #addRate`).val();
+      var restoFormAvis: any = $(`div[id=${divComment}] #addCommentArea`).val();
+      console.log(restoFormAvis);
+      console.log(restoFormNote);
+
+      /********* on crée les élements Html de notre nouvel Avis  ***********/
+      var addNote = document.createElement("li");
+      addNote.setAttribute("class", "liAdd");
+      var addComment = document.createElement("li");
+      var addContent = document.createElement("div");
+      var addContentClass = addContent.setAttribute("class", "ratings");
+
+      /************ ajout dans la liste ************/
+      addNote.append(restoFormNote);
+      addComment.append(restoFormAvis);
+      addContent.appendChild(addNote);
+      addContent.appendChild(addComment);
+      $(`#${selectUl}`).append(addContent);
+      $(`#${contentRate}`).hide();
+      stars();
+      $("textarea").val("");
+      newAverage(selectUl)
+      event.stopPropagation();
+    });
+
       $(".divNoteComment").hide();
       $("ul").hide();
     });
     /***************************************************************************************/
     auclic();
+
+    
 
     /***************************************************************************************/
     /***************  Recupère Infos Formulaire d'ajout de restaurants  ********************/
@@ -582,6 +628,7 @@ function list() {
       list.setAttribute("class", "case");
       list.setAttribute("id", "caseAdd");
       list.setAttribute("data-js", "hide");
+      list.setAttribute("id", `caseAdd`)
       var restoName = document.createElement("h5");
       var restoAverage = document.createElement("aside");
       restoAverage.setAttribute("class", "averageBox");
@@ -758,21 +805,14 @@ function average(json: any) {
 
 
 /***************************************************************************************/
-/********************* Fonction affiche la moyenne des restaurants ********************/
-function newAverage() {
-  console.log(selectUl)
-  let i;
-  let select = selectUl
-  .parents(".visible")
-  .attr("id");
-  console.log(select)
-  let li = $(`ul#${select} li`)
-  console.log(li.length)
+/************** Apres ajout avis , recalcule la moyenne des restaurants ***************/
+function newAverage(selecteur:any) {
+
+  let li = document.querySelectorAll(`ul#${selecteur} li`);
   let arrayNotes: any = new Array();
-  console.log(arrayNotes)
-  for (i = 0; i <= li.length; i++) {
-    let note = li.html();
-    console.log(li.html())
+  li.forEach ((element:any, i:any)=> {
+
+    let note = element.innerHTML;
     switch (note) {
       case '<img src="assets/img/1stars.png" id="stars">':
         arrayNotes.push(1);
@@ -797,69 +837,26 @@ function newAverage() {
       default:
         console.log('Sorry, we are out of ' + note + '.');
     }
-  }
+  });
+console.log(arrayNotes)
+  let total = arrayNotes.reduce(
+    (partial_sum: any, a: any) => partial_sum + a,0
+  );
+  let moyenne:number = total / arrayNotes.length;
+  let moyenneString:string = moyenne.toString();
+  var appendNote = $(`ul#${selecteur} li`).parents("article").attr("id");
+  var selector = $(`#${appendNote} aside`);
+  selector.text(moyenneString);
 
-    let total = arrayNotes.reduce(
-      (partial_sum: any, a: any) => partial_sum + a,
-      0
-    );
-    let moyenne: any = total / arrayNotes.length;
-var appendNote = li.parents("article").attr("href");
-var selector = $(`${appendNote} aside`)
-    selector.append(moyenne);
-    console.log(moyenne)
-    console.log(appendNote)
 }
 /***************************************************************************************/
+
 
 
 /***************************************************************************************/
 /********************** Fonction évenement au clic sur Liste Resto ********************/
 function auclic() {
-  /****************** Clic sur envoi commentaire Resto Json ********************/
-  let sendCommentId = $(".sendCommentBtn");
-  Array.prototype.forEach.call(sendCommentId, function(hider: any) {
-    let selectBtn = hider.getAttribute("id");
-    hider.addEventListener("click", function(event: any) {
-      let selectUl = $(`#${selectBtn}`)
-        .parents(".visible")
-        .attr("id");
-      console.log(selectUl);
-      let contentRate = $(`#${selectBtn}`)
-        .parents("div")
-        .attr("id");
-      let divRate = $(`#${contentRate}`)
-        .children("div")
-        .attr("id");
-      let divComment = $(`#${contentRate}`)
-        .children("div")
-        .next()
-        .attr("id");
-      var restoFormNote: any = $(`div[id=${divRate}] #addRate`).val();
-      var restoFormAvis: any = $(`div[id=${divComment}] #addCommentArea`).val();
-      console.log(restoFormAvis);
-      console.log(restoFormNote);
-
-      /********* on crée les élements Html de notre nouvel Avis  ***********/
-      var addNote = document.createElement("li");
-      addNote.setAttribute("class", "liAdd");
-      var addComment = document.createElement("li");
-      var addContent = document.createElement("div");
-      var addContentClass = addContent.setAttribute("class", "ratings");
-
-      /************ ajout dans la liste ************/
-      addNote.append(restoFormNote);
-      addComment.append(restoFormAvis);
-      addContent.appendChild(addNote);
-      addContent.appendChild(addComment);
-      $(`#${selectUl}`).append(addContent);
-      $(`#${contentRate}`).hide();
-      stars();
-      $("textarea").val("");
-      event.stopPropagation();
-    });
-  });
-
+ 
   /***************** Clic Sur liste Restos *****************/
   let hiders = document.querySelectorAll('[data-js="hide"]');
   Array.prototype.forEach.call(hiders, function(hider: any) {
