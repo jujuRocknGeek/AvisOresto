@@ -6,7 +6,7 @@ var infowindow: any;
 var marker: any;
 let jsonMarkers: any = [];
 let addRestoMarker: any = [];
-let selectUl:any;
+let selectUl: any;
 /***************  Cacher le Formulaire d'ajout de Restaurant + au clic Show() ********************/
 $("#restoForm").hide();
 $("#addResto").click(() => {
@@ -14,7 +14,7 @@ $("#addResto").click(() => {
 });
 
 /***************************************************************************************/
-/********************* initialise la carte ******************/
+/********************************* initialise la carte ********************************/
 let mapRun = function() {
   return new Promise(function(resolve: any, reject: any) {
     geocoder = new google.maps.Geocoder();
@@ -57,6 +57,8 @@ mapRun()
   .catch(error => console.log(error));
 /***************************************************************************************/
 
+/***************************************************************************************/
+/***************************** Affiche Restos Google Place ****************************/
 function restoGooglePlace() {
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(
@@ -75,7 +77,7 @@ function restoGooglePlace() {
         service = new google.maps.places.PlacesService(map);
         service.nearbySearch(request, restoPlace);
         map.setCenter(pos);
-
+        /******************* renvoi Place id de chaque resto ********************/
         function restoPlace(results: any, status: any) {
           if (status == google.maps.places.PlacesServiceStatus.OK) {
             results.forEach((element: any, j: any) => {
@@ -113,6 +115,7 @@ function restoGooglePlace() {
                   addStreetview.setAttribute("class", "streetviewDiv");
                   addStreetview.appendChild(createPhoto(detail, 200, 100));
 
+                  /******************* Ajout photo restaurant Place API ********************/
                   function createPhoto(place: any, larg: any, long: any) {
                     var photos = place.photos;
                     if (!photos) {
@@ -188,7 +191,6 @@ function restoGooglePlace() {
                     addContent.appendChild(addNote);
                     addContent.appendChild(addComment);
                     restoRating.appendChild(addContent);
-                    /* addStreetview.appendChild(addImg);*/
                   });
 
                   /************ ajouter le tout dans la liste ************/
@@ -210,7 +212,6 @@ function restoGooglePlace() {
                 auclic();
 
                 $(`#sendCommentBtnP${j}`).click(function(event: any) {
-
                   let selectUl = $(`#sendCommentBtnP${j}`)
                     .parents(".visible")
                     .attr("id");
@@ -304,7 +305,7 @@ function restoGooglePlace() {
 }
 
 /***************************************************************************************/
-/******************* Ajouter un resto au clic bouton ou map****************************/
+/******************* Ajouter resto au clic Droit bouton sur map****************************/
 function addResto() {
   geocoderInverse = new google.maps.Geocoder();
   map.addListener("rightclick", function(e: any) {
@@ -359,7 +360,6 @@ function markerJson() {
     });
   });
 }
-
 /***************************************************************************************/
 
 /***************************************************************************************/
@@ -446,7 +446,7 @@ function list() {
       var list = document.createElement("article");
       list.setAttribute("class", "case");
       list.setAttribute("data-js", "hide");
-      list.setAttribute("id", `case${i}`)
+      list.setAttribute("id", `case${i}`);
       list.setAttribute("href", `#menu${i}`);
       var restoName = document.createElement("h5");
       var restoAverage = document.createElement("aside");
@@ -542,55 +542,54 @@ function list() {
       var section = document.querySelector(".list");
       section.appendChild(list);
 
+      /****************** Clic sur envoi commentaire Resto Json ********************/
+      $(`#sendCommentBtn${i}`).click(function(event: any) {
+        let selectUl = $(this)
+          .parents(".visible")
+          .attr("id");
+        console.log(selectUl);
+        let contentRate = $(this)
+          .parents("div")
+          .attr("id");
+        let divRate = $(`#${contentRate}`)
+          .children("div")
+          .attr("id");
+        let divComment = $(`#${contentRate}`)
+          .children("div")
+          .next()
+          .attr("id");
+        var restoFormNote: any = $(`div[id=${divRate}] #addRate`).val();
+        var restoFormAvis: any = $(
+          `div[id=${divComment}] #addCommentArea`
+        ).val();
+        console.log(restoFormAvis);
+        console.log(restoFormNote);
 
-       /****************** Clic sur envoi commentaire Resto Json ********************/
-  $(`#sendCommentBtn${i}`).click(function(event: any) {
-      let selectUl = $(this)
-        .parents(".visible")
-        .attr("id");
-      console.log(selectUl);
-      let contentRate = $(this)
-        .parents("div")
-        .attr("id");
-      let divRate = $(`#${contentRate}`)
-        .children("div")
-        .attr("id");
-      let divComment = $(`#${contentRate}`)
-        .children("div")
-        .next()
-        .attr("id");
-      var restoFormNote: any = $(`div[id=${divRate}] #addRate`).val();
-      var restoFormAvis: any = $(`div[id=${divComment}] #addCommentArea`).val();
-      console.log(restoFormAvis);
-      console.log(restoFormNote);
+        /********* on crée les élements Html de notre nouvel Avis  ***********/
+        var addNote = document.createElement("li");
+        addNote.setAttribute("class", "liAdd");
+        var addComment = document.createElement("li");
+        var addContent = document.createElement("div");
+        var addContentClass = addContent.setAttribute("class", "ratings");
 
-      /********* on crée les élements Html de notre nouvel Avis  ***********/
-      var addNote = document.createElement("li");
-      addNote.setAttribute("class", "liAdd");
-      var addComment = document.createElement("li");
-      var addContent = document.createElement("div");
-      var addContentClass = addContent.setAttribute("class", "ratings");
-
-      /************ ajout dans la liste ************/
-      addNote.append(restoFormNote);
-      addComment.append(restoFormAvis);
-      addContent.appendChild(addNote);
-      addContent.appendChild(addComment);
-      $(`#${selectUl}`).append(addContent);
-      $(`#${contentRate}`).hide();
-      stars();
-      $("textarea").val("");
-      newAverage(selectUl)
-      event.stopPropagation();
-    });
+        /************ ajout dans la liste ************/
+        addNote.append(restoFormNote);
+        addComment.append(restoFormAvis);
+        addContent.appendChild(addNote);
+        addContent.appendChild(addComment);
+        $(`#${selectUl}`).append(addContent);
+        $(`#${contentRate}`).hide();
+        stars();
+        $("textarea").val("");
+        newAverage(selectUl);
+        event.stopPropagation();
+      });
 
       $(".divNoteComment").hide();
       $("ul").hide();
     });
     /***************************************************************************************/
     auclic();
-
-    
 
     /***************************************************************************************/
     /***************  Recupère Infos Formulaire d'ajout de restaurants  ********************/
@@ -628,7 +627,7 @@ function list() {
       list.setAttribute("class", "case");
       list.setAttribute("id", "caseAdd");
       list.setAttribute("data-js", "hide");
-      list.setAttribute("id", `caseAdd`)
+      list.setAttribute("id", `caseAdd`);
       var restoName = document.createElement("h5");
       var restoAverage = document.createElement("aside");
       restoAverage.setAttribute("class", "averageBox");
@@ -803,60 +802,57 @@ function average(json: any) {
 }
 /***************************************************************************************/
 
-
 /***************************************************************************************/
 /************** Apres ajout avis , recalcule la moyenne des restaurants ***************/
-function newAverage(selecteur:any) {
-
+function newAverage(selecteur: any) {
   let li = document.querySelectorAll(`ul#${selecteur} li`);
   let arrayNotes: any = new Array();
-  li.forEach ((element:any, i:any)=> {
-
+  li.forEach((element: any, i: any) => {
     let note = element.innerHTML;
     switch (note) {
       case '<img src="assets/img/1stars.png" id="stars">':
         arrayNotes.push(1);
-        console.log("cas 1")
+        console.log("cas 1");
         break;
       case '<img src="assets/img/2stars.png" id="stars">':
         arrayNotes.push(2);
-        console.log("cas 2")
+        console.log("cas 2");
         break;
       case '<img src="assets/img/3stars.png" id="stars">':
         arrayNotes.push(3);
-        console.log("cas 3")
+        console.log("cas 3");
         break;
       case '<img src="assets/img/4stars.png" id="stars">':
         arrayNotes.push(4);
-        console.log("cas 4")
+        console.log("cas 4");
         break;
       case '<img src="assets/img/5stars.png" id="stars">':
         arrayNotes.push(5);
-        console.log("cas 5")
+        console.log("cas 5");
         break;
       default:
-        console.log('Sorry, we are out of ' + note + '.');
+        console.log("Sorry, we are out of " + note + ".");
     }
   });
-console.log(arrayNotes)
+  console.log(arrayNotes);
   let total = arrayNotes.reduce(
-    (partial_sum: any, a: any) => partial_sum + a,0
+    (partial_sum: any, a: any) => partial_sum + a,
+    0
   );
-  let moyenne:number = total / arrayNotes.length;
-  let moyenneString:string = moyenne.toString();
-  var appendNote = $(`ul#${selecteur} li`).parents("article").attr("id");
+  let moyenne: number = total / arrayNotes.length;
+  let arrondi = moyenne.toFixed(2);
+  let moyenneString: string = arrondi.toString();
+  var appendNote = $(`ul#${selecteur} li`)
+    .parents("article")
+    .attr("id");
   var selector = $(`#${appendNote} aside`);
   selector.text(moyenneString);
-
 }
 /***************************************************************************************/
-
-
 
 /***************************************************************************************/
 /********************** Fonction évenement au clic sur Liste Resto ********************/
 function auclic() {
- 
   /***************** Clic Sur liste Restos *****************/
   let hiders = document.querySelectorAll('[data-js="hide"]');
   Array.prototype.forEach.call(hiders, function(hider: any) {
