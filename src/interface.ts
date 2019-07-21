@@ -52,7 +52,7 @@ mapRun()
   .then(() =>
     setTimeout(() => {
       list(), markerJson(), addResto(), restoGooglePlace();
-    }, 1000)
+    }, 2000)
   )
   .catch(error => console.log(error));
 /***************************************************************************************/
@@ -182,10 +182,7 @@ function restoGooglePlace() {
                     var addNote = document.createElement("li");
                     var addComment = document.createElement("li");
                     var addContent = document.createElement("div");
-                    var addContentClass = addContent.setAttribute(
-                      "class",
-                      "ratings"
-                    );
+                    var addContentClass = addContent.setAttribute("class","ratings");
                     addNote.textContent = element.rating;
                     addComment.textContent = element.text;
                     addContent.appendChild(addNote);
@@ -215,7 +212,6 @@ function restoGooglePlace() {
                   let selectUl = $(`#sendCommentBtnP${j}`)
                     .parents(".visible")
                     .attr("id");
-                  console.log(selectUl);
                   let contentRate = $(`#sendCommentBtnP${j}`)
                     .parents("div")
                     .attr("id");
@@ -322,7 +318,6 @@ function addResto() {
           if (results[0]) {
             map.setZoom(14);
             map.setCenter(latLng);
-            console.log(results[0].formatted_address);
             $("#adresse").val(results[0].formatted_address);
             $("#restoForm").show();
           } else {
@@ -381,7 +376,6 @@ function selectOne() {
     let noteNumber: number = parseInt(noteStars);
     if (noteNumber > 1) {
       $(`article:eq(${i})`).hide();
-      console.log("dans la fonction");
     } else {
       $(`article:eq(${i})`).show();
       marker.setVisible(true);
@@ -547,7 +541,6 @@ function list() {
         let selectUl = $(this)
           .parents(".visible")
           .attr("id");
-        console.log(selectUl);
         let contentRate = $(this)
           .parents("div")
           .attr("id");
@@ -562,8 +555,6 @@ function list() {
         var restoFormAvis: any = $(
           `div[id=${divComment}] #addCommentArea`
         ).val();
-        console.log(restoFormAvis);
-        console.log(restoFormNote);
 
         /********* on crée les élements Html de notre nouvel Avis  ***********/
         var addNote = document.createElement("li");
@@ -686,7 +677,7 @@ function list() {
 
       var sendComment = document.createElement("button");
       sendComment.setAttribute("class", "sendCommentBtn");
-      sendComment.setAttribute("id", "CommentBtnSend");
+      sendComment.setAttribute("id", "commentBtnSend");
       sendComment.textContent = "Envoyez";
 
       divNoteComment.appendChild(divAddNote);
@@ -710,7 +701,6 @@ function list() {
       list.appendChild(restoAddress);
       list.appendChild(addStreetview);
       list.appendChild(restoRating);
-      console.log(restoName);
 
       var section = document.querySelector(".list");
       section.appendChild(list);
@@ -729,9 +719,54 @@ function list() {
         $(".imgClose").click(event => {
           $("#ulAdd").hide();
           event.stopPropagation();
-        });
+        });       
       });
       stars();
+
+      $("#commentBtnSend").click(function(event: any) {
+        let selectUl = $("#commentBtnSend")
+          .parents(".visible")
+          .attr("id");
+        let contentRate = $("#commentBtnSend")
+          .parents("div")
+          .attr("id");
+        let divRate = $(`#${contentRate}`)
+          .children("div")
+          .attr("id");
+        let divComment = $(`#${contentRate}`)
+          .children("div")
+          .next()
+          .attr("id");
+        var restoFormNote: any = $(
+          `div[id=${divRate}] #addRate`
+        ).val();
+        var restoFormAvis: any = $(
+          `div[id=${divComment}] #addCommentArea`
+        ).val();
+
+        /********* on crée les élements Html de notre nouvel Avis  ***********/
+        var addNote = document.createElement("li");
+        addNote.setAttribute("class", "liAdd");
+        var addComment = document.createElement("li");
+        var addContent = document.createElement("div");
+        var addContentClass = addContent.setAttribute(
+          "class",
+          "ratings"
+        );
+
+        /************ ajout dans la liste ************/
+        addNote.append(restoFormNote);
+        addComment.append(restoFormAvis);
+        addContent.appendChild(addNote);
+        addContent.appendChild(addComment);
+        $(`#${selectUl}`).append(addContent);
+        $(`#${contentRate}`).hide();
+        stars();
+        $("textarea").val("");
+        newAverage(selectUl);
+        event.stopPropagation();
+      });
+
     }
   }
 }
@@ -812,29 +847,23 @@ function newAverage(selecteur: any) {
     switch (note) {
       case '<img src="assets/img/1stars.png" id="stars">':
         arrayNotes.push(1);
-        console.log("cas 1");
         break;
       case '<img src="assets/img/2stars.png" id="stars">':
         arrayNotes.push(2);
-        console.log("cas 2");
         break;
       case '<img src="assets/img/3stars.png" id="stars">':
         arrayNotes.push(3);
-        console.log("cas 3");
         break;
       case '<img src="assets/img/4stars.png" id="stars">':
         arrayNotes.push(4);
-        console.log("cas 4");
         break;
       case '<img src="assets/img/5stars.png" id="stars">':
         arrayNotes.push(5);
-        console.log("cas 5");
         break;
       default:
         console.log("Sorry, we are out of " + note + ".");
     }
   });
-  console.log(arrayNotes);
   let total = arrayNotes.reduce(
     (partial_sum: any, a: any) => partial_sum + a,
     0
@@ -871,7 +900,6 @@ function auclic() {
     let hiderTarg = $(`${hiderId}`);
     $(`#${hiderId}`).click(e => {
       e.preventDefault();
-      console.log("clic sur " + hiderId);
       $("ul").hide();
       event.stopPropagation();
     });
